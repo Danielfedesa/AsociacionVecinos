@@ -1,0 +1,9 @@
+{% extends "core/base.html" %}
+{% block title %}Inicio · Asociación de Vecinos{% endblock %}
+{% block content %}
+<div class="p-5 bg-light rounded-3 mb-4">
+  <h1 class="display-6 mb-3">Bienvenid@</h1>
+  <p class="lead">Consulta nuestras actividades deportivas y de manualidades.</p>
+  <a class="btn btn-primary" href="{% url 'actividades' %}">Ver actividades</a>
+</div>
+{% endblock %}
