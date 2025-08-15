@@ -14,15 +14,15 @@ def actividades(request):
     return render(request, "core/actividades.html", {"crafts": crafts, "sports": sports})
 
 def actividad_detalle(request, slug):
-    actividad = get_object_or_404(Activity.objects.prefetch_related("sessions"), slug=slug)
-    return render(request, "core/actividad_detalle.html", {"a": actividad})
+    a = get_object_or_404(Activity, slug=slug)
+    return render(request, "core/actividad_detalle.html", {"a": a})
 
-def _floor_time_to_slot(t: time, minutes=30) -> time:
+def _floor_time_to_slot(t: time, minutes=60) -> time:
     # Redondea hacia abajo al múltiplo de "minutes"
     m = (t.minute // minutes) * minutes
     return time(t.hour, m)
 
-def _ceil_time_to_slot(t: time, minutes=30) -> time:
+def _ceil_time_to_slot(t: time, minutes=60) -> time:
     # Redondea hacia arriba al múltiplo de "minutes"
     total = t.hour * 60 + t.minute
     rem = total % minutes
@@ -59,28 +59,28 @@ def horarios(request):
 
     min_start = min(s.start_time for s in qs)
     max_end = max(s.end_time for s in qs)
-    start = _floor_time_to_slot(min_start, 30)
-    end = _ceil_time_to_slot(max_end, 30)
-    slots = _time_slots(start, end, 30)
+    start = _floor_time_to_slot(min_start, 60)
+    end = _ceil_time_to_slot(max_end,60)
+    slots = _time_slots(start, end, 60)
     slot_index = {s: i for i, s in enumerate(slots)}
 
     # grid_rows: lista de filas [{label:str, cells:[ [sesiones...]*5 ]}]
     grid_rows = []
     for i, s in enumerate(slots):
-        next_dt = (datetime.combine(datetime.today(), s) + timedelta(minutes=30)).time()
+        next_dt = (datetime.combine(datetime.today(), s) + timedelta(minutes=60)).time()
         label = f"{s.strftime('%H:%M')}–{next_dt.strftime('%H:%M')}"
         grid_rows.append({"label": label, "cells": [[] for _ in range(5)]})
 
     for ses in qs:
-        s_start = _floor_time_to_slot(ses.start_time, 30)
-        s_end = _ceil_time_to_slot(ses.end_time, 30)
+        s_start = _floor_time_to_slot(ses.start_time, 60)
+        s_end = _ceil_time_to_slot(ses.end_time, 60)
         cur = datetime.combine(datetime.today(), s_start)
         end_dt = datetime.combine(datetime.today(), s_end)
         while cur < end_dt:
             idx = slot_index.get(cur.time())
             if idx is not None:
                 grid_rows[idx]["cells"][ses.day_of_week].append(ses)
-            cur += timedelta(minutes=30)
+            cur += timedelta(minutes=60)
 
     return render(request, "core/horarios.html", {
         "day_names": day_names,

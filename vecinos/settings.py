@@ -127,3 +127,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Email settings
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 DEFAULT_FROM_EMAIL = "web@asociacion.local"
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Para las imágenes subidas por el admin en actividades
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
