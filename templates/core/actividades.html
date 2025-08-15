@@ -1,6 +1,37 @@
 {% extends "core/base.html" %}
 {% block title %}Actividades{% endblock %}
 {% block content %}
-<h1 class="h3 mb-3">Actividades</h1>
-<p>Aquí listaremos todas las actividades.</p>
+<h1 class="h3 mb-4">Actividades</h1>
+
+<div class="row g-4">
+  <div class="col-md-6">
+    <div class="card h-100">
+      <div class="card-body">
+        <h2 class="h5">Manualidades</h2>
+        <ul class="mb-0">
+          {% for a in crafts %}
+            <li><a href="{% url 'actividad_detalle' a.slug %}">{{ a.name }}</a></li>
+          {% empty %}
+            <li>No hay actividades de manualidades disponibles.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card h-100">
+      <div class="card-body">
+        <h2 class="h5">Deportivas</h2>
+        <ul class="mb-0">
+          {% for a in sports %}
+            <li><a href="{% url 'actividad_detalle' a.slug %}">{{ a.name }}</a></li>
+          {% empty %}
+            <li>No hay actividades deportivas disponibles.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

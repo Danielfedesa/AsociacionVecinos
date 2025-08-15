@@ -1,9 +1,35 @@
 {% extends "core/base.html" %}
+{% load static %}
 {% block title %}Inicio · Asociación de Vecinos{% endblock %}
 {% block content %}
-<div class="p-5 bg-light rounded-3 mb-4">
-  <h1 class="display-6 mb-3">Bienvenid@</h1>
-  <p class="lead">Consulta nuestras actividades deportivas y de manualidades.</p>
-  <a class="btn btn-primary" href="{% url 'actividades' %}">Ver actividades</a>
+
+<div class="row align-items-center g-4 mb-4">
+  <div class="col-md-6">
+    <h1 class="h3 mb-3">Bienvenid@ a la Asociación de Vecinos</h1>
+    <p>Somos una asociación sin ánimo de lucro que organiza actividades deportivas y de manualidades para todas las edades. Nuestro objetivo es dinamizar el barrio y fomentar la convivencia.</p>
+    <a class="btn btn-primary" href="{% url 'actividades' %}">Ver actividades</a>
+  </div>
+  <div class="col-md-6">
+    <img class="img-fluid rounded" src="{% static 'img/portada.jpg' %}" alt="Asociación de vecinos">
+  </div>
 </div>
+
+<h2 class="h4 mb-3">Tablón de anuncios</h2>
+<div class="list-group">
+  {% for n in anuncios %}
+    <div class="list-group-item">
+      <div class="d-flex justify-content-between align-items-start">
+        <h3 class="fw-bold fs-5 mb-1">{{ n.title }}</h3>
+        <small class="text-muted">{{ n.published_at|date:"d/m/Y H:i" }}</small>
+      </div>
+      <p class="mb-0">{{ n.body|linebreaksbr }}</p>
+      {% if n.is_pinned %}
+        <span class="badge text-bg-warning mt-2">Destacado</span>
+      {% endif %}
+    </div>
+  {% empty %}
+    <div class="alert alert-info">No hay anuncios por el momento.</div>
+  {% endfor %}
+</div>
+
 {% endblock %}
