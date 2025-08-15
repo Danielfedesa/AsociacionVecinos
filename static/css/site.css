@@ -1,1 +1,10 @@
 body { scroll-behavior: smooth; }
+
+.horario-escolar .badge {
+  white-space: normal;      /* permitir multilínea */
+  font-weight: 500;
+}
+.horario-escolar td {
+  vertical-align: top;
+  min-width: 160px;
+}

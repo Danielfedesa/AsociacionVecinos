@@ -1,0 +1,20 @@
+{% extends "core/base.html" %}
+{% block title %}{{ a.name }} · Actividad{% endblock %}
+{% block content %}
+<a class="btn btn-outline-secondary mb-3" href="{% url 'actividades' %}">← Volver a actividades</a>
+
+<h1 class="h3">{{ a.name }}</h1>
+<p class="text-muted mb-2">{{ a.get_category_display }} · {{ a.location }}</p>
+<p>{{ a.description|linebreaks }}</p>
+
+{% if a.sessions.all %}
+  <h2 class="h6 mt-4">Horarios</h2>
+  <ul>
+    {% for s in a.sessions.all %}
+      <li>{{ s.get_day_of_week_display }} {{ s.start_time }}–{{ s.end_time }}</li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <div class="alert alert-info">No hay horarios asignados todavía.</div>
+{% endif %}
+{% endblock %}

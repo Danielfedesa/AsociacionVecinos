@@ -1,6 +1,41 @@
 {% extends "core/base.html" %}
 {% block title %}Horarios{% endblock %}
 {% block content %}
-<h1 class="h3 mb-3">Horarios</h1>
-<p>Tabla de horarios próximamente.</p>
+<h1 class="h3 mb-3">Horarios (Lunes a Viernes)</h1>
+
+<div class="table-responsive horario-escolar">
+  <table class="table table-bordered align-middle">
+    <thead class="table-light">
+      <tr>
+        <th style="width:110px;">Hora</th>
+        {% for name in day_names %}
+          <th>{{ name }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in grid_rows %}
+        <tr>
+          <th class="text-nowrap">{{ row.label }}</th>
+          {% for cell in row.cells %}
+            <td>
+              {% if cell %}
+                {% for s in cell %}
+                  <div class="badge text-bg-primary d-block text-start mb-1">
+                    <a class="link-light text-decoration-none" href="{{ s.activity.get_absolute_url }}">
+                      {{ s.activity.name }}
+                    </a>
+                    {% if s.activity.location %}<span class="opacity-75"> · {{ s.activity.location }}</span>{% endif %}
+                  </div>
+                {% endfor %}
+              {% else %}
+                <span class="text-body-tertiary">—</span>
+              {% endif %}
+            </td>
+          {% endfor %}
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 {% endblock %}
