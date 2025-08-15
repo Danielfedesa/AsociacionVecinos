@@ -21,11 +21,17 @@
             <td>
               {% if cell %}
                 {% for s in cell %}
-                  <div class="badge text-bg-primary d-block text-start mb-1">
-                    <a class="link-light text-decoration-none" href="{{ s.activity.get_absolute_url }}">
+                  <div class="slot-pill
+                              {% if s.activity.category == 'sports' %}badge-sports
+                              {% elif s.activity.category == 'crafts' %}badge-crafts
+                              {% else %}badge-default{% endif %}
+                              mb-1">
+                    <a class="link-dark text-decoration-none" href="{{ s.activity.get_absolute_url }}">
                       {{ s.activity.name }}
                     </a>
-                    {% if s.activity.location %}<span class="opacity-75"> · {{ s.activity.location }}</span>{% endif %}
+                    {% if s.activity.location %}
+                      <span class="opacity-75"> · {{ s.activity.location }}</span>
+                    {% endif %}
                   </div>
                 {% endfor %}
               {% else %}

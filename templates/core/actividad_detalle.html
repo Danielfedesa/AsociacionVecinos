@@ -1,20 +1,37 @@
 {% extends "core/base.html" %}
+{% load static %}
 {% block title %}{{ a.name }} · Actividad{% endblock %}
 {% block content %}
 <a class="btn btn-outline-secondary mb-3" href="{% url 'actividades' %}">← Volver a actividades</a>
 
-<h1 class="h3">{{ a.name }}</h1>
-<p class="text-muted mb-2">{{ a.get_category_display }} · {{ a.location }}</p>
+{% if a.image %}
+  <img src="{{ a.image.url }}" class="img-fluid rounded mb-4" alt="{{ a.name }}">
+{% else %}
+  <img src="{% static 'img/actividad-placeholder.jpg' %}" class="img-fluid rounded mb-4" alt="{{ a.name }}">
+{% endif %}
+
+<h1 class="h3 fw-bold">{{ a.name }}</h1>
+<p class="text-muted mb-3">
+  {{ a.get_category_display }}
+  {% if a.location %} · {{ a.location }}{% endif %}
+</p>
+
 <p>{{ a.description|linebreaks }}</p>
 
 {% if a.sessions.all %}
-  <h2 class="h6 mt-4">Horarios</h2>
-  <ul>
+  <h2 class="h4 mb-3">Horarios</h2>
+  <div class="list-group tablon-anuncios">
     {% for s in a.sessions.all %}
-      <li>{{ s.get_day_of_week_display }} {{ s.start_time }}–{{ s.end_time }}</li>
+      <div class="list-group-item">
+        <div class="d-flex justify-content-between align-items-start">
+          <h3 class="fw-bold fs-5 mb-1">{{ s.get_day_of_week_display }}</h3>
+          <span class="fw-semibold">{{ s.start_time }} – {{ s.end_time }}</span>
+        </div>
+      </div>
     {% endfor %}
-  </ul>
+  </div>
 {% else %}
-  <div class="alert alert-info">No hay horarios asignados todavía.</div>
+  <div class="alert alert-info mt-3">No hay horarios asignados todavía.</div>
 {% endif %}
+
 {% endblock %}

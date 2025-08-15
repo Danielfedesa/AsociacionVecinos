@@ -10,7 +10,7 @@ class Activity(models.Model):
     slug = models.SlugField(unique=True, max_length=140, help_text="Se genera automáticamente si se deja vacío", blank=True)
     category = models.CharField("Categoría", max_length=20, choices=CATEGORY_CHOICES)
     description = models.TextField("Descripción", blank=True)
-    location = models.CharField("Lugar", max_length=120, blank=True)
+    image = models.ImageField(upload_to="activities/", blank=True, null=True) 
 
     class Meta:
         verbose_name = "Actividad"
